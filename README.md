@@ -1,2 +1,0 @@
-# squid-backend
-Squid (backend)

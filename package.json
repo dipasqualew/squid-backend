@@ -1,0 +1,50 @@
+{
+  "name": "squid",
+  "version": "0.1.0",
+  "author": "William Di Pasquale <wdp@dipasqualew.com",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "@koa/router": "^10.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
+    "axios": "^0.21.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.18",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "pg": "^8.5.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^26.0.20",
+    "@types/knex": "^0.16.1",
+    "@types/koa": "^2.13.0",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa__cors": "^3.0.2",
+    "@types/koa__router": "^8.0.4",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.20.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "sqlite3": "^5.0.2",
+    "ts-jest": "^26.5.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "db:exec": "docker exec -it squid_dev_db",
+    "db:ssh": "yarn db:exec bash",
+    "db:psql": "yarn db:ssh -c 'psql --username $POSTGRES_USER $POSTGRES_DB'",
+    "db:start": "docker-compose run --name squid_dev_db --publish 5432:5432 --detach postgres || docker start squid_dev_db",
+    "db:stop": "docker container stop squid_dev_db",
+    "serve": "nodemon",
+    "test": "NODE_ENV=test jest --colors",
+    "test:e2e": "yarn test --selectProjects E2E",
+    "test:unit": "yarn test --selectProjects UNIT"
+  }
+}
