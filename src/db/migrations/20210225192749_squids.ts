@@ -16,7 +16,7 @@ export async function up(knex: Knex): Promise<void> {
       .notNullable()
       .defaultTo('');
 
-    table.string('contentType')
+    table.string('content_type')
       .notNullable();
 
     table.string('public')

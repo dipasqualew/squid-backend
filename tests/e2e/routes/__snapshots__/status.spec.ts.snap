@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`e2e.routes: /status returns the application state 1`] = `
+exports[`e2e.routes.status GET /v1/status returns the application state 1`] = `
 Object {
   "status": "OK",
 }

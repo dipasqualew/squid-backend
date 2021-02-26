@@ -44,7 +44,7 @@
     "db:stop": "docker container stop squid_dev_db",
     "serve": "nodemon",
     "test": "NODE_ENV=test jest --colors",
-    "test:e2e": "yarn test --selectProjects E2E",
+    "test:e2e": "yarn test --selectProjects E2E --runInBand",
     "test:unit": "yarn test --selectProjects UNIT"
   }
 }

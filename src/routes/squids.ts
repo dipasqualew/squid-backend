@@ -1,15 +1,17 @@
 import Router from '@koa/router';
 
+import { ROUTES } from './config';
 import type { SquidAppState, SquidAppContext } from '../server';
 import type { Squid } from '../db/models/Squid';
 
-export const SquidDetail = async (context: SquidAppContext): Promise<void> => {
+export const SquidsDetail = async (context: SquidAppContext): Promise<void> => {
   const uuid: string = context.params.uuid;
 
   const squid = await context.db
-    .select<Squid[]>('*')
+    .select<Squid[]>('squids.uuid', 'squids.owner_uuid', 'squids.title', 'squids.content_type', 'squids.public', 'squids_contents.contents')
     .from('squids')
-    .where({ uuid })
+    .leftJoin('squids_contents', 'squids.uuid', 'squids_contents.uuid')
+    .where({ 'squids.uuid': uuid })
     .first();
 
   if (squid) {
@@ -21,7 +23,7 @@ export const SquidDetail = async (context: SquidAppContext): Promise<void> => {
   }
 };
 
-export const SquidList = async (context: SquidAppContext): Promise<void> => {
+export const SquidsList = async (context: SquidAppContext): Promise<void> => {
   const squids = await context.db
     .select<Squid[]>('*')
     .from('squids');
@@ -30,5 +32,5 @@ export const SquidList = async (context: SquidAppContext): Promise<void> => {
 };
 
 export const SquidsController = new Router<SquidAppState, SquidAppContext>()
-  .get('/v1/squids/:uuid', SquidDetail)
-  .get('/v1/squids', SquidList);
+  .get(ROUTES.SQUIDS__DETAIL.path, SquidsDetail)
+  .get(ROUTES.SQUIDS__LIST.path, SquidsList);

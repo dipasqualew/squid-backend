@@ -14,7 +14,7 @@ const getProject = (type, color, options = {}) => ({
 
 const jestConfig = {
   projects: [
-    getProject('e2e', 'magenta', { setupFilesAfterEnv: ['<rootDir>/tests/e2e/setup.ts'] }),
+    getProject('e2e', 'magenta', { setupFilesAfterEnv: ['<rootDir>/tests/e2e/setup.ts'], runInBand: true }),
     getProject('unit', 'blue'),
   ],
 };

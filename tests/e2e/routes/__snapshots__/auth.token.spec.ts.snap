@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`e2e.routes: /auth/token With bad credentials returns an error list 1`] = `
-Array [
-  "Not Authorized",
-]
-`;

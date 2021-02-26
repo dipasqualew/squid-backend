@@ -1,13 +1,12 @@
 import type { Context } from 'koa';
 import Router from '@koa/router';
 
-import { getDB } from '../../db/config';
-import { Claim, sign } from '../../auth';
+import { getDB } from '../db/config';
+import { Claim, sign } from '../auth';
+import { ROUTES } from './config';
 
 
-export const GenerateJWT = async (context: Context): Promise<void> => {
-  context.response.headers['access-control-allow-origin'] = '*';
-
+export const UsersAuth = async (context: Context): Promise<void> => {
   const db = getDB();
   const rows = await db
     .select<Claim[]>('uuid', 'email')
@@ -33,7 +32,5 @@ export const GenerateJWT = async (context: Context): Promise<void> => {
 
 };
 
-export const V1_USERS_AUTH_VIEWS = new Router();
-
-V1_USERS_AUTH_VIEWS
-  .post('/v1/users/auth/jwt', GenerateJWT);
+export const UsersController = new Router()
+  .post(ROUTES.USERS__AUTH.path, UsersAuth);

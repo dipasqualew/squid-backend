@@ -8,8 +8,8 @@ const config = (options: Record<string, unknown> = {}) => ({
   client: 'postgresql',
   connection: process.env.POSTGRESQL_CONNECTION_STRING,
   pool: {
-    min: 2,
-    max: 20
+    min: process.env.POSTGRES_CONNECTION_POOL_MIN || 2,
+    max: process.env.POSTGRES_CONNECTION_POOL_MIN || 20,
   },
   migrations: {
     tableName: 'knex_migrations',

@@ -13,9 +13,13 @@ export interface Squid {
   uuid: string;
   owner_uuid: string;
   title: string;
-  contentType: ContentType;
+  content_type: ContentType;
   public: PublicState,
-  contents?: string;
+}
+
+export interface SquidContents {
+  uuid: string;
+  contents: string;
 }
 
 export interface Squad {

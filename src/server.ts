@@ -10,9 +10,9 @@ import { DatabaseMiddleware } from './db/config';
 import { Claim, verify } from './auth';
 
 // Routes
-import { V1_USERS_AUTH_VIEWS } from './routes/users/auth.view';
-import { V1_STATUS_VIEWS } from './routes/status.view';
-import { SquidsController } from './routes/squids.views';
+import { SquidsController } from './routes/squids';
+import { StatusController } from './routes/status';
+import { UsersController } from './routes/users';
 
 export interface AppConfig {
   logging?: {
@@ -63,8 +63,8 @@ export class App {
       this._app.use(AuthMiddleware);
       this._app.use(cors());
       this._app.use(bodyParser({ enableTypes: ['json'] }));
-      this._app.use(V1_STATUS_VIEWS.routes());
-      this._app.use(V1_USERS_AUTH_VIEWS.routes());
+      this._app.use(StatusController.routes());
+      this._app.use(UsersController.routes());
       this._app.use(SquidsController.routes());
     }
 
