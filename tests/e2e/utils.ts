@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import axios, { AxiosResponse } from 'axios';
-import knex from "knex";
+import knex from 'knex';
 
-import { App } from '../../src/server';
 import { TablePriority } from '../../src/db/config';
-import { Route, ROUTES } from '../../src/routes/config';
+import { ROUTES, Route } from '../../src/routes/config';
+import { App } from '../../src/server';
 
 const knexfile = require('../../knexfile');
 
@@ -87,8 +87,11 @@ export class RouteTester {
   static ROUTES = ROUTES;
 
   public app: App;
+
   public db: knex;
+
   public route: Route;
+
   public port: number;
 
   constructor(route: Route) {

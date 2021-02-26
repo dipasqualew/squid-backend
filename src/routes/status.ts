@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 
+import type { SquidAppContext, SquidAppState } from '../server';
 import { ROUTES } from './config';
-import type { SquidAppState, SquidAppContext } from '../server';
 
 export const Status = async (context: SquidAppContext): Promise<void> => {
   context.body = { status: 'OK' };

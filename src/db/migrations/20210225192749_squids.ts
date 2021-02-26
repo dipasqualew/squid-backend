@@ -1,11 +1,11 @@
-import * as Knex from "knex";
+import * as Knex from 'knex';
 
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('squids', (table) => {
     table.uuid('uuid')
       .primary()
-      .defaultTo(knex.raw("gen_random_uuid()"));
+      .defaultTo(knex.raw('gen_random_uuid()'));
 
     table.uuid('owner_uuid')
       .references('uuid')
@@ -38,7 +38,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('squads', (table) => {
     table.uuid('uuid')
       .primary()
-      .defaultTo(knex.raw("gen_random_uuid()"));
+      .defaultTo(knex.raw('gen_random_uuid()'));
 
     table.uuid('start')
       .references('uuid')

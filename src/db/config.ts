@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import knex from "knex";
-import type { DefaultContext } from 'koa';
-
+import knex from 'knex';
 
 const knexfile = require('../../knexfile');
 
@@ -21,11 +19,4 @@ export const TablePriority = [
 ];
 
 
-export const getDB = (): knex => {
-  return knex(knexfile);
-};
-
-export const DatabaseMiddleware = async (context: DefaultContext, next: () => Promise<void>): Promise<void> => {
-  context.db = getDB();
-  await next();
-};
+export const getDB = (): knex => knex(knexfile);

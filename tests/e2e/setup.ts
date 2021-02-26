@@ -1,4 +1,4 @@
-import { migrateDB, truncateDB, destroyDBConnection } from './utils';
+import { destroyDBConnection, migrateDB, truncateDB } from './utils';
 
 
 beforeAll(async () => {

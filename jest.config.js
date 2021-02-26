@@ -7,14 +7,14 @@ const getProject = (type, color, options = {}) => ({
     '~/(.*)$': '<rootDir>/$1',
   },
   preset: 'ts-jest',
-  testEnvironment: "node",
+  testEnvironment: 'node',
   testMatch: [`<rootDir>/tests/${type}/**/*.spec.ts`],
   ...options,
 });
 
 const jestConfig = {
   projects: [
-    getProject('e2e', 'magenta', { setupFilesAfterEnv: ['<rootDir>/tests/e2e/setup.ts'], runInBand: true }),
+    getProject('e2e', 'magenta', { setupFilesAfterEnv: ['<rootDir>/tests/e2e/setup.ts'] }),
     getProject('unit', 'blue'),
   ],
 };

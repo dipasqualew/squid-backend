@@ -1,4 +1,4 @@
-import * as Knex from "knex";
+import * as Knex from 'knex';
 import { v4 as uuid4 } from 'uuid';
 
 import type { User } from '../models/User';
@@ -18,7 +18,7 @@ export const USERS: Record<string, Required<User>> = {
     preferred_name: 'Michelangelo',
     email: 'michelangelo.buonarroti@dipasqualew.com',
     password: 'LaP1eta%Nel1aB4silicaDiSanPi3tro',
-  }
+  },
 };
 
 export const UserGenerator = (overrides: Partial<User> = {}): Required<User> => ({
@@ -31,7 +31,7 @@ export const UserGenerator = (overrides: Partial<User> = {}): Required<User> => 
 });
 
 export async function seed(knex: Knex): Promise<void> {
-  await knex("users").del();
+  await knex('users').del();
 
-  await knex("users").insert(Object.values(UserGenerator));
+  await knex('users').insert(Object.values(UserGenerator));
 }

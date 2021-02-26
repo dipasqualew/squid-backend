@@ -1,8 +1,8 @@
 import Router from '@koa/router';
 
-import { ROUTES } from './config';
-import type { SquidAppState, SquidAppContext } from '../server';
 import type { Squid } from '../db/models/Squid';
+import type { SquidAppContext, SquidAppState } from '../server';
+import { ROUTES } from './config';
 
 export const SquidsDetail = async (context: SquidAppContext): Promise<void> => {
   const uuid: string = context.params.uuid;

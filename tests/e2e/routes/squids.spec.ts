@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 
-import { RouteTester } from '../utils';
 import { UserGenerator } from '../../../src/db/seeds/01_users.seed';
-import { SquidGenerator, SquidContentsGenerator } from '../../../src/db/seeds/02_squids.seed';
+import { SquidContentsGenerator, SquidGenerator } from '../../../src/db/seeds/02_squids.seed';
+import { RouteTester } from '../utils';
 
 describe('e2e.routes.users', () => {
   RouteTester.test(RouteTester.ROUTES.SQUIDS__DETAIL, (tester) => {
@@ -34,9 +34,9 @@ describe('e2e.routes.users', () => {
       });
 
       it('joins the squid and the squid content', () => {
-        const squid = response.data.data;
+        const actual = response.data.data;
 
-        expect(squid).toEqual({ ...squid, ...squidContent });
+        expect(actual).toEqual({ ...squid, ...squidContent });
       });
     });
 
@@ -53,15 +53,14 @@ describe('e2e.routes.users', () => {
       });
 
       it('joins the squid and the squid content', () => {
-        const squid = response.data.data;
+        const actual = response.data.data;
 
-        expect(squid).toEqual(null);
+        expect(actual).toEqual(null);
       });
     });
   });
 
   RouteTester.test(RouteTester.ROUTES.SQUIDS__LIST, (tester) => {
-
     describe('With no squids', () => {
       let response: AxiosResponse;
 
@@ -107,8 +106,6 @@ describe('e2e.routes.users', () => {
       it('returns an array of existing squids', () => {
         expect(response.data.data).toEqual([squid]);
       });
-
     });
   });
-
 });

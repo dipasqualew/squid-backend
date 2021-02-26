@@ -1,4 +1,4 @@
-import * as Knex from "knex";
+import * as Knex from 'knex';
 
 
 export async function up(knex: Knex): Promise<void> {
@@ -20,7 +20,7 @@ export async function down(knex: Knex): Promise<void> {
     await knex.raw(`
       -- Drop extensions
       DROP EXTENSION IF EXISTS "pgcrypto";
-    `)
+    `);
   } catch {
     // in some databases the pgcrypto extension
     // is already created by the system user

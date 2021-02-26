@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 
-import { RouteTester } from '../utils';
 import { verify } from '../../../src/auth';
 import { UserGenerator } from '../../../src/db/seeds/01_users.seed';
+import { RouteTester } from '../utils';
 
 describe('e2e.routes.users', () => {
   RouteTester.test(RouteTester.ROUTES.USERS__AUTH, (tester) => {

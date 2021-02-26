@@ -1,7 +1,9 @@
-import * as Knex from "knex";
+import * as Knex from 'knex';
 import { v4 as uuid4 } from 'uuid';
 
-import { Squid, SquidContents, ContentType, Squad, PublicState } from '../models/Squid';
+import {
+  ContentType, PublicState, Squad, Squid, SquidContents,
+} from '../models/Squid';
 import { USERS } from './01_users.seed';
 
 export const SQUIDS: Record<string, Squid> = {
@@ -50,7 +52,7 @@ export const SQUIDS_CONTENTS: Record<string, SquidContents> = {
   },
   PRIVATE: {
     uuid: 'efa8bf82-33fc-44dc-9eaa-1bd1c4b977e0',
-    contents: `Miki's letters are no one's business`,
+    contents: 'Miki\'s letters are no one\'s business',
   },
 };
 
@@ -64,7 +66,7 @@ export const SQUADS: Record<string, Squad> = {
     uuid: 'd2ee1e96-c527-4831-b08e-eae1c351b238',
     start: SQUIDS.IMAGE.uuid,
     end: SQUIDS.PRIVATE.uuid,
-  }
+  },
 };
 
 export const SquidGenerator = (overrides: Partial<Squid> = {}): Required<Squid> => ({
@@ -90,11 +92,11 @@ export const SquadGenerator = (overrides: Partial<Squad> = {}): Required<Squad> 
 });
 
 export async function seed(knex: Knex): Promise<void> {
-  await knex("squads").del();
-  await knex("squids_contents").del();
-  await knex("squids").del();
+  await knex('squads').del();
+  await knex('squids_contents').del();
+  await knex('squids').del();
 
-  await knex("squids").insert(Object.values(SQUIDS));
-  await knex("squids_contents").insert(Object.values(SQUIDS_CONTENTS));
-  await knex("squads").insert(Object.values(SQUADS));
+  await knex('squids').insert(Object.values(SQUIDS));
+  await knex('squids_contents').insert(Object.values(SQUIDS_CONTENTS));
+  await knex('squads').insert(Object.values(SQUADS));
 }

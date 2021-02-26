@@ -1,8 +1,8 @@
-import type { Context } from 'koa';
 import Router from '@koa/router';
+import type { Context } from 'koa';
 
-import { getDB } from '../db/config';
 import { Claim, sign } from '../auth';
+import { getDB } from '../db/config';
 import { ROUTES } from './config';
 
 
@@ -13,7 +13,7 @@ export const UsersAuth = async (context: Context): Promise<void> => {
     .from('users')
     .where({
       email: context.request.body.email,
-      password: db.raw(`crypt('${context.request.body.password}', password)`)
+      password: db.raw(`crypt('${context.request.body.password}', password)`),
     });
 
   if (rows.length === 1) {
@@ -25,11 +25,10 @@ export const UsersAuth = async (context: Context): Promise<void> => {
     context.response.status = 403;
     context.response.body = {
       errors: [
-        'Not Authorized'
-      ]
+        'Not Authorized',
+      ],
     };
   }
-
 };
 
 export const UsersController = new Router()
