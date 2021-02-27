@@ -14,6 +14,7 @@ const getProject = (type, color, options = {}) => ({
 
 const jestConfig = {
   projects: [
+    getProject('db', 'red'),
     getProject('e2e', 'magenta', { setupFilesAfterEnv: ['<rootDir>/tests/e2e/setup.ts'] }),
     getProject('unit', 'blue'),
   ],

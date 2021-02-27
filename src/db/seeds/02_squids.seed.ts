@@ -2,8 +2,12 @@ import * as Knex from 'knex';
 import { v4 as uuid4 } from 'uuid';
 
 import {
-  ContentType, PublicState, Squad, Squid, SquidContents,
-} from '../models/Squid';
+  ContentType,
+  PublicState,
+  Squid,
+  SquidContents,
+  SquidLink,
+} from '../models';
 import { USERS } from './01_users.seed';
 
 export const SQUIDS: Record<string, Squid> = {
@@ -56,7 +60,7 @@ export const SQUIDS_CONTENTS: Record<string, SquidContents> = {
   },
 };
 
-export const SQUADS: Record<string, Squad> = {
+export const SQUADS: Record<string, SquidLink> = {
   DEFAULT: {
     uuid: 'c2c5cf1e-5f0a-49be-a64a-68e470deb32b',
     start: SQUIDS.DEFAULT.uuid,
@@ -84,7 +88,7 @@ export const SquidContentsGenerator = (overrides: Partial<SquidContents> = {}): 
   ...overrides,
 });
 
-export const SquadGenerator = (overrides: Partial<Squad> = {}): Required<Squad> => ({
+export const SquidLinkGenerator = (overrides: Partial<SquidLink> = {}): Required<SquidLink> => ({
   uuid: uuid4(),
   start: uuid4(),
   end: uuid4(),

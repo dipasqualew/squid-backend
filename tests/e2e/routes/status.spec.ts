@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 
 import { ROUTES } from '../../../src/routes/config';
-import { RouteTester } from '../utils';
+import { RouteTester } from '../../utils';
 
 describe('e2e.routes.status', () => {
   RouteTester.test(ROUTES.STATUS, (tester) => {

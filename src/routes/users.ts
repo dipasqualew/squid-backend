@@ -1,19 +1,17 @@
 import Router from '@koa/router';
-import type { Context } from 'koa';
 
 import { Claim, sign } from '../auth';
-import { getDB } from '../db/config';
+import type { SquidAppContext, SquidAppState } from '../server';
 import { ROUTES } from './config';
 
 
-export const UsersAuth = async (context: Context): Promise<void> => {
-  const db = getDB();
-  const rows = await db
+export const UsersAuth = async (context: SquidAppContext): Promise<void> => {
+  const rows = await context.db
     .select<Claim[]>('uuid', 'email')
     .from('users')
     .where({
       email: context.request.body.email,
-      password: db.raw(`crypt('${context.request.body.password}', password)`),
+      password: context.db.raw(`crypt('${context.request.body.password}', password)`),
     });
 
   if (rows.length === 1) {
@@ -31,5 +29,5 @@ export const UsersAuth = async (context: Context): Promise<void> => {
   }
 };
 
-export const UsersController = new Router()
+export const UsersController = new Router<SquidAppState, SquidAppContext>()
   .post(ROUTES.USERS__AUTH.path, UsersAuth);

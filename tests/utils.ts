@@ -3,11 +3,11 @@
 import axios, { AxiosResponse } from 'axios';
 import knex from 'knex';
 
-import { TablePriority } from '../../src/db/config';
-import { ROUTES, Route } from '../../src/routes/config';
-import { App } from '../../src/server';
+import { TablePriority } from '../src/db/config';
+import { ROUTES, Route } from '../src/routes/config';
+import { App } from '../src/server';
 
-const knexfile = require('../../knexfile');
+const knexfile = require('../knexfile');
 
 export const getDB = (): knex => {
   type globalWithDb = typeof global & { db?: knex };
@@ -105,6 +105,7 @@ export class RouteTester {
     this.db = getDB();
 
     this.app = new App({
+      db: getDB(),
       logging: {
         quiet: true,
       },

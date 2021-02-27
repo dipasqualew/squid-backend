@@ -1,6 +1,8 @@
+import { getDB } from './db/config';
 import { App, AppConfig } from './server';
 
 const APP_CONFIG: AppConfig = {
+  db: getDB(),
   server: {
     port: 3000,
   },

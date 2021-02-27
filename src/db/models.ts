@@ -22,8 +22,28 @@ export interface SquidContents {
   contents: string;
 }
 
-export interface Squad {
+export interface SquidLink {
   uuid: string;
   start: string;
   end: string;
+}
+
+export interface Squad {
+  uuid: string;
+  title: string;
+  description: string;
+}
+
+export interface SquidInSquad {
+  uuid: string;
+  squad_uuid: string;
+  squid_uuid: string;
+}
+
+export interface User {
+  uuid: string;
+  full_name: string;
+  preferred_name: string;
+  email: string;
+  password?: string;
 }

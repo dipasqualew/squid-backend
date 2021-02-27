@@ -1,12 +1,9 @@
-import { getDB } from '../db/config';
+import knex from 'knex';
+
 import type { SquidMiddleware } from '../server';
 
-export const DatabaseMiddleware = (): SquidMiddleware => {
-  const connection = getDB();
+export const DatabaseMiddleware = (connection: knex): SquidMiddleware => async function Database(context, next): Promise<void> {
+  context.db = connection;
 
-  return async function Database(context, next): Promise<void> {
-    context.db = connection;
-
-    await next();
-  };
+  await next();
 };

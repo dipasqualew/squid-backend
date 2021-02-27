@@ -21,6 +21,7 @@ export interface AppConfig {
   logging?: {
     quiet: boolean,
   },
+  db: knex;
   server: {
     port: number;
   }
@@ -55,7 +56,7 @@ export class App {
       this.$app.use(LoggerMiddleware());
       this.$app.use(cors());
       this.$app.use(bodyParser({ enableTypes: ['json'] }));
-      this.$app.use(DatabaseMiddleware());
+      this.$app.use(DatabaseMiddleware(this.config.db));
       this.$app.use(AuthMiddleware());
       this.$app.use(StatusController.routes());
       this.$app.use(UsersController.routes());
@@ -91,11 +92,3 @@ export class App {
     return this.server;
   }
 }
-
-export const start = (port: number): () => Server => {
-  const app = new App({ server: { port } });
-  const server = app.listen();
-  const close = () => server.close();
-
-  return close;
-};

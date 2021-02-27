@@ -1,7 +1,7 @@
 import * as Knex from 'knex';
 import { v4 as uuid4 } from 'uuid';
 
-import type { User } from '../models/User';
+import type { User } from '../models';
 
 
 export const USERS: Record<string, Required<User>> = {
