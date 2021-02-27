@@ -1,8 +1,10 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import axios, { AxiosResponse } from 'axios';
 import knex from 'knex';
 
+import { Claim, sign } from '../src/auth';
 import { TablePriority } from '../src/db/config';
 import { ROUTES, Route } from '../src/routes/config';
 import { App } from '../src/server';
@@ -53,13 +55,15 @@ export const rollbackDB = async (): Promise<void> => {
   await db.migrate.rollback();
 };
 
-export const formatUrl = (base: string, params: Record<string, string>): string => {
+export const formatUrl = (base: string, params: Record<string, string> | null): string => {
   let formatted = base;
 
-  Object.entries(params).forEach(([key, value]) => {
-    const regex = new RegExp(`:${key}`);
-    formatted = formatted.replace(regex, value);
-  });
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      const regex = new RegExp(`:${key}`);
+      formatted = formatted.replace(regex, value);
+    });
+  }
 
   return formatted;
 };
@@ -69,19 +73,31 @@ export const query = async (
   port: number,
   data: Record<string, unknown> | null = null,
   params: Record<string, string> = {},
+  claim: Claim | null = null,
 ): Promise<AxiosResponse<unknown>> => {
   const formatted = formatUrl(route.path, params);
   const url = `http://localhost:${port}${formatted}`;
+  const headers: Record<string, string> = {};
+
+  if (claim) {
+    const jwt = await sign(claim);
+    headers.Authorization = jwt;
+  }
 
   const response = await axios.request({
     url,
     data,
     method: route.method,
+    headers,
     validateStatus: () => true,
   });
 
   return response;
 };
+
+export type ResponseContext = { response: AxiosResponse } & Record<string, unknown>;
+export type SetupFunction<T extends ResponseContext> = () => Promise<T>;
+export type TeardownFunction<T extends ResponseContext> = (context: T) => Promise<void>;
 
 export class RouteTester {
   static ROUTES = ROUTES;
@@ -106,8 +122,8 @@ export class RouteTester {
 
     this.app = new App({
       db: getDB(),
-      logging: {
-        quiet: true,
+      logger: {
+        level: 'error',
       },
       server: {
         port: this.port,
@@ -118,8 +134,9 @@ export class RouteTester {
   async query(
     data: Record<string, unknown> | null = null,
     params: Record<string, string> = {},
+    claim: Claim | null = null,
   ): Promise<AxiosResponse<unknown>> {
-    return query(this.route, this.port, data, params);
+    return query(this.route, this.port, data, params, claim);
   }
 
   beforeAll(func: (() => Promise<void>) | null = null): void {
@@ -140,6 +157,56 @@ export class RouteTester {
       }
 
       await this.app.server?.close();
+    });
+  }
+
+  test403<T extends ResponseContext>(description: string, setup: SetupFunction<T>, teardown?: TeardownFunction<T>): void {
+    describe(description, () => {
+      let context: T;
+
+      this.beforeAll(async () => {
+        context = await setup();
+      });
+
+      this.afterAll(async () => {
+        if (teardown) {
+          await teardown(context);
+        }
+      });
+
+      it('returns HTTP 403', () => {
+        expect(context.response.status).toEqual(403);
+      });
+
+      it('returns an explanation to the client', () => {
+        const actual = context.response.data;
+        expect(actual.message).toEqual('ERROR');
+      });
+    });
+  }
+
+  test404<T extends ResponseContext>(description: string, setup: SetupFunction<T>, teardown?: TeardownFunction<T>): void {
+    describe(description, () => {
+      let context: T;
+
+      this.beforeAll(async () => {
+        context = await setup();
+      });
+
+      this.afterAll(async () => {
+        if (teardown) {
+          await teardown(context);
+        }
+      });
+
+      it('returns HTTP 404', () => {
+        expect(context.response.status).toEqual(404);
+      });
+
+      it('returns an explanation to the client', () => {
+        const actual = context.response.data;
+        expect(actual.message).toEqual('ERROR');
+      });
     });
   }
 

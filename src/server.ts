@@ -10,16 +10,16 @@ import { Claim } from './auth';
 import {
   AuthMiddleware,
   DatabaseMiddleware,
+  ErrorMiddleware,
   LoggerMiddleware,
-  SquidErrorHandler,
 } from './middleware';
 import { SquidsController } from './routes/squids';
 import { StatusController } from './routes/status';
 import { UsersController } from './routes/users';
 
 export interface AppConfig {
-  logging?: {
-    quiet: boolean,
+  logger: {
+    level: string,
   },
   db: knex;
   server: {
@@ -53,15 +53,16 @@ export class App {
   get app(): Koa<SquidAppState, SquidAppContext> {
     if (!this.$app) {
       this.$app = new Koa<SquidAppState, SquidAppContext>();
-      this.$app.use(LoggerMiddleware());
-      this.$app.use(cors());
-      this.$app.use(bodyParser({ enableTypes: ['json'] }));
-      this.$app.use(DatabaseMiddleware(this.config.db));
-      this.$app.use(AuthMiddleware());
-      this.$app.use(StatusController.routes());
-      this.$app.use(UsersController.routes());
-      this.$app.use(SquidsController.routes());
-      this.$app.on('error', SquidErrorHandler);
+      this.$app
+        .use(LoggerMiddleware(this.config.logger))
+        .use(cors())
+        .use(bodyParser({ enableTypes: ['json'] }))
+        .use(ErrorMiddleware())
+        .use(DatabaseMiddleware(this.config.db))
+        .use(AuthMiddleware())
+        .use(StatusController.routes())
+        .use(UsersController.routes())
+        .use(SquidsController.routes());
     }
 
     return this.$app;

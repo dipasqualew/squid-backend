@@ -3,6 +3,9 @@ import { App, AppConfig } from './server';
 
 const APP_CONFIG: AppConfig = {
   db: getDB(),
+  logger: {
+    level: 'info',
+  },
   server: {
     port: 3000,
   },

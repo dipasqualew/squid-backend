@@ -7,7 +7,7 @@ import type { Squid } from '../db/models';
 import type { SquidAppContext, SquidAppState } from '../server';
 import { ROUTES } from './config';
 
-export const SquidsDetail = Detail((context) => {
+export const SquidsDetail = Detail('squids', 'uuid', false, (context) => {
   const uuid: string = context.params.uuid;
 
   return context.db
@@ -18,13 +18,11 @@ export const SquidsDetail = Detail((context) => {
     .first();
 });
 
-export const SquidsList = List(
-  (context) => context.db
-    .select<Squid[]>('*')
-    .from('squids'),
-);
+export const SquidsList = List('squids', false, (context) => context.db
+  .select<Squid[]>('*')
+  .from('squids'));
 
-export const SquidsPut = Put(async (context) => {
+export const SquidsPut = Put('squids', true, async (context) => {
   const payload = context.request.body;
 
   await context.db('squids')
@@ -35,7 +33,7 @@ export const SquidsPut = Put(async (context) => {
   return payload;
 });
 
-export const SquidsDelete = Delete((context) => {
+export const SquidsDelete = Delete('squids', true, (context) => {
   const uuid: string = context.params.uuid;
 
   return context.db('squids').where({ uuid }).delete();
